@@ -5,6 +5,12 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
-    ansible.builtin.assert:
-      that: true
+  - name: "Check if docker is installed"
+    package_facts:
+      manager: "auto"
+
+  - name: "Package check result"
+    ansible.builtin.fail:
+      msg: Docker package not found
+    failed_when: true
+    when: "'docker-ce' not in ansible_facts.packages"

@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: "Include ansible-role-install_docker"
-      include_role:
-        name: "ansible-role-install_docker"
+  become: true
+
+  roles:
+    - role: glillico.install_docker

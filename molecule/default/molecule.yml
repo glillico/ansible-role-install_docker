@@ -1,11 +1,16 @@
 ---
+role_name_check: 1
 dependency:
   name: galaxy
 driver:
   name: vagrant
+  provider:
+    name: virtualbox
 platforms:
   - name: instance
+    box: geerlingguy/${MOLECULE_DISTRO:-debian11}
+    pre_build_image: true
 provisioner:
   name: ansible
-verifier:
-  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
