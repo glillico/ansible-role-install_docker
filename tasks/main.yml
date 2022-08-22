@@ -1,2 +1,30 @@
 ---
 # tasks file for ansible-role-install_docker
+
+- name: Check if docker is already installed.
+  package_facts:
+    manager: "auto"
+
+- block:
+  - name: Download docker install script.
+    ansible.builtin.get_url:
+      url: https://get.docker.com/
+      dest: /tmp/get-docker.sh
+      mode: 0775
+
+  - name: Run docker install script.
+    ansible.builtin.command: /tmp/get-docker.sh
+
+  when: idk_docker_package_name not in ansible_facts.packages
+
+- name: Ensure docker is enabled & started.
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Ensure {{ ansible_user }} account is a member of the docker group.
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true

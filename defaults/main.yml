@@ -1,2 +1,4 @@
 ---
 # defaults file for ansible-role-install_docker
+
+idk_docker_package_name: docker-ce
