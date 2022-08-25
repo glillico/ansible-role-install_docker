@@ -4,13 +4,18 @@
 - name: Verify
   hosts: all
   gather_facts: false
-  tasks:
-  - name: "Check if docker is installed"
-    package_facts:
-      manager: "auto"
 
-  - name: "Package check result"
-    ansible.builtin.fail:
-      msg: Docker package not found
-    failed_when: true
-    when: "'docker-ce' not in ansible_facts.packages"
+  pre_tasks:
+    - name: Include variables.
+      ansible.builtin.include_vars: 'vars/main.yml'
+
+  tasks:
+    - name: "Check if docker is installed"
+      ansible.builtin.package_facts:
+        manager: "auto"
+
+    - name: "Package check result"
+      ansible.builtin.fail:
+        msg: Docker package not found
+      failed_when: true
+      when: "'docker-ce' not in ansible_facts.packages"

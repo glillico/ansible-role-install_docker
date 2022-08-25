@@ -3,14 +3,14 @@ role_name_check: 1
 dependency:
   name: galaxy
 driver:
-  name: vagrant
-  provider:
-    name: virtualbox
+  name: docker
 platforms:
   - name: instance
-    box: geerlingguy/${MOLECULE_DISTRO:-debian11}
+    image: "glillico/docker-${MOLECULE_DISTRO:-rockylinux8}-ansible:${MOLECULE_TAG:-latest}"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
     pre_build_image: true
 provisioner:
   name: ansible
-  playbooks:
-    converge: ${MOLECULE_PLAYBOOK:-converge.yml}

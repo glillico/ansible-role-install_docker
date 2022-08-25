@@ -1,7 +1,10 @@
 ---
 - name: Converge
   hosts: all
-  become: true
+
+  pre_tasks:
+    - name: Include variables.
+      include_vars: 'vars/main.yml'
 
   roles:
     - role: glillico.install_docker
