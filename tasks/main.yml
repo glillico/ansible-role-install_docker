@@ -1,8 +1,19 @@
 ---
 # tasks file for ansible-role-install_docker
 
+- fail:
+    msg: This playbook will not work on 'Debian 9' based systems.
+  when: ( ansible_facts['distribution'] == 'Debian' ) and
+        ( ansible_facts['distribution_major_version'] == '9' )
+
+- name: Make sure python3-apt is installed.
+  ansible.builtin.package:
+    name: python3-apt
+    state: present
+  when: ansible_facts['os_family'] == 'Debian'
+
 - name: Check if docker is already installed.
-  package_facts:
+  ansible.builtin.package_facts:
     manager: "auto"
 
 - block:
@@ -23,8 +34,10 @@
     state: started
     enabled: true
 
-- name: Ensure {{ ansible_user }} account is a member of the docker group.
+- name: Ensure specified user accounts are members of the docker group.
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: "{{ item }}"
     groups: docker
     append: true
+  with_items: '{{ idk_docker_group_users }}'
+  when: idk_docker_add_to_group
