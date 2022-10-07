@@ -34,10 +34,20 @@
     state: started
     enabled: true
 
-- name: Ensure specified user accounts are members of the docker group.
+- name: Install docker compose plugin.
+  ansible.builtin.package:
+    name: docker-compose-plugin
+    state: present
+  when: idk_install_docker_compose
+
+- name: Ensure specified user accounts are added of the docker group.
   ansible.builtin.user:
-    name: "{{ item }}"
+    name: '{{ item }}'
     groups: docker
     append: true
   with_items: '{{ idk_docker_group_users }}'
   when: idk_docker_add_to_group
+
+# reset_connection task does not support when conditional
+- name: Reset connection due to docker group change.
+  meta: reset_connection
