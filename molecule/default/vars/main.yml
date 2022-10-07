@@ -4,4 +4,5 @@ idk_docker_package_name: docker-ce
 idk_docker_group_users:
   - testuser1
   - testuser2
-idk_docker_add_to_group: false
+idk_docker_add_to_group: true
+idk_install_docker_compose: true
