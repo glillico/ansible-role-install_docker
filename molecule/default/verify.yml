@@ -19,3 +19,18 @@
         msg: Docker package not found
       failed_when: true
       when: "'docker-ce' not in ansible_facts.packages"
+
+    - name: Retrieve the file information for '/etc/cron.daily/docker_prune'.
+      stat:
+        path: '/etc/cron.daily/docker_prune'
+      register: remote_file
+
+    - name: Test that the '/etc/cron.daily/docker_prune' file was created correctly.
+      assert:
+        that:
+          - remote_file.stat.exists
+          - remote_file.stat.isreg
+          - remote_file.stat.path == '/etc/cron.daily/docker_prune'
+          - remote_file.stat.mode == '0755'
+          - remote_file.stat.pw_name == 'root'
+          - remote_file.stat.gr_name == 'root'
