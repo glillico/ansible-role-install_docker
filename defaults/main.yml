@@ -5,3 +5,4 @@ idk_docker_package_name: docker-ce
 idk_docker_group_users:
 idk_docker_add_to_group: false
 idk_install_docker_compose: true
+idk_docker_add_cron_daily: true

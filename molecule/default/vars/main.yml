@@ -6,3 +6,4 @@ idk_docker_group_users:
   - testuser2
 idk_docker_add_to_group: true
 idk_install_docker_compose: true
+idk_docker_add_cron_daily: true
