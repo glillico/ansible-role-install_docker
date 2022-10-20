@@ -6,7 +6,7 @@
   when: ( ansible_facts['distribution'] == 'Debian' ) and
         ( ansible_facts['distribution_major_version'] == '9' )
 
-- name: Make sure python3-apt is installed.
+- name: Make sure python3-apt package is installed.
   ansible.builtin.package:
     name: python3-apt
     state: present
@@ -34,7 +34,7 @@
     state: started
     enabled: true
 
-- name: Install docker compose plugin.
+- name: Make sure docker-compose-plugin package is installed.
   ansible.builtin.package:
     name: docker-compose-plugin
     state: present
@@ -48,6 +48,24 @@
   with_items: '{{ idk_docker_group_users }}'
   when: idk_docker_add_to_group
 
-# reset_connection task does not support when conditional
+# reset_connection task does not support when conditional.
 - name: Reset connection due to docker group change.
   meta: reset_connection
+
+- block:
+  - name: Make sure crontabs package is installed.
+    ansible.builtin.package:
+      name: crontabs
+      state: present
+    when: ansible_facts['os_family'] == 'RedHat'
+
+  - name: Add daily docker prune cron entry.
+    ansible.builtin.copy:
+      dest: "/etc/cron.daily/docker_prune"
+      mode: 0755
+      content: |
+        #!/bin/bash
+        # Ansible Managed
+        docker system prune -af --filter "until=$((2*24))h"
+
+  when: idk_docker_add_cron_daily
