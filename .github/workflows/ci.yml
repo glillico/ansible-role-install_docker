@@ -1,0 +1,77 @@
+---
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+  schedule:
+    - cron: '35 4 * * 6'
+
+defaults:
+  run:
+    working-directory: 'glillico.install_docker'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out git repository.
+        uses: actions/checkout@v2
+        with:
+          path: 'glillico.install_docker'
+
+      - name: Setup python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install package dependencies.
+        run: pip3 install ansible ansible-lint yamllint
+
+      - name: Perform linting.
+        run: |
+          yamllint .
+          ansible-lint
+
+  molecule:
+    needs: lint
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        distro:
+          - amazonlinux2
+          - centos7
+          - rockylinux8
+          - debian9
+          - debian10
+          - debian11
+          - ubuntu1804
+          - ubuntu2004
+        tag:
+          - latest
+    steps:
+      - name: Check out git repository.
+        uses: actions/checkout@v2
+        with:
+          path: 'glillico.install_docker'
+
+      - name: Setup python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install package dependencies.
+        run: pip3 install ansible docker molecule[docker]
+
+      - name: Perform molecule tests.
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          MOLECULE_TAG: ${{ matrix.tag }}
