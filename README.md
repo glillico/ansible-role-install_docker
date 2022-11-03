@@ -1,4 +1,6 @@
-# ansible-role-install_docker
+# Ansible Role : install_docker
+
+[![CI](https://github.com/glillico/ansible-role-install_docker/workflows/CI/badge.svg)](https://github.com/glillico/ansible-role-install_docker/actions?query=workflow%3ACI)
 
 Installs the Docker CE package.
 
