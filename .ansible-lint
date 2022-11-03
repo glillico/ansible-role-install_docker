@@ -2,4 +2,5 @@ skip_list:
   - 'yaml'
   - 'role-name'
   - 'fqcn-builtins'
-
+  - 'name[missing]'
+  - 'no-changed-when'
