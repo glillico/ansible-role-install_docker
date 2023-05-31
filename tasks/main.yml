@@ -33,6 +33,7 @@
     name: docker
     state: started
     enabled: true
+  when: idk_docker_service_enable
 
 - name: Make sure docker-compose-plugin package is installed.
   ansible.builtin.package:
