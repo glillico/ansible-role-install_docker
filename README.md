@@ -17,6 +17,7 @@ None.
 |idk_docker_package_name|Defines the package name that will be installed.|
 |idk_docker_add_to_group|Defines whether the task to add userdis to the `docker` group should be run.|
 |idk_docker_group_users|Defines the users that will be added to the `docker` group.|
+|idk_docker_service_enable|Enable and start the docker service when set to `true`.|
 
 ## Dependencies
 

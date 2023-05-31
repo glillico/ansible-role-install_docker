@@ -6,3 +6,4 @@ idk_docker_group_users:
 idk_docker_add_to_group: false
 idk_install_docker_compose: true
 idk_docker_add_cron_daily: true
+idk_docker_service_enable: false
