@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out git repository.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: 'glillico.install_docker'
 
       - name: Setup python 3.
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -43,21 +43,20 @@ jobs:
       fail-fast: false
       matrix:
         distro:
-          - centos7
-          - debian10
           - debian11
-          - ubuntu2004
+          - debian12
           - ubuntu2204
+          - ubuntu2404
         tag:
           - latest
     steps:
       - name: Check out git repository.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: 'glillico.install_docker'
 
       - name: Setup python 3.
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
